@@ -1,0 +1,62 @@
+[
+  {
+    "id": "0",
+    "name": "Laptop HP",
+    "description": "Rápida y liviana.",
+    "price": 800
+  },
+  {
+    "id": "1",
+    "name": "Smartphone Xiaomi",
+    "description": "Cámara de 108 MP.",
+    "price": 500
+  },
+  {
+    "id": "2",
+    "name": "Smart TV Samsung",
+    "description": "Pantalla QLED 4K.",
+    "price": 900
+  },
+  {
+    "id": "3",
+    "name": "Consola Xbox",
+    "description": "Juegos exclusivos.",
+    "price": 500
+  },
+  {
+    "id": "4",
+    "name": "Audífonos Bose",
+    "description": "Cancelación de ruido.",
+    "price": 350
+  },
+  {
+    "id": "5",
+    "name": "Tablet Apple",
+    "description": "Pantalla Retina.",
+    "price": 700
+  },
+  {
+    "id": "6",
+    "name": "Cámara Canon",
+    "description": "Sensor de 24 MP.",
+    "price": 900
+  },
+  {
+    "id": "7",
+    "name": "Impresora Epson",
+    "description": "Inalámbrica y económica.",
+    "price": 150
+  },
+  {
+    "id": "8",
+    "name": "Bocina JBL",
+    "description": "Bluetooth y resistente al agua.",
+    "price": 80
+  },
+  {
+    "id": "9",
+    "name": "Monitor LG",
+    "description": "Pantalla curva de 32 pulgadas.",
+    "price": 600
+  }
+]
