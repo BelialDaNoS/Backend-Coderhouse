@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Tienda Virtual</title>
+    <style>
+		.disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+	</style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="./index.html">Tienda Virtual</a>
+            <a class="navbar-brand" href="http://localhost:8080/api/cat/">Tienda Virtual</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="./public/products.html">Product Manager</a>
+                    <a class="nav-link" href="http://localhost:8080/api/productsmanager">Product Manager</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -32,8 +38,46 @@
         </div>
     </nav>
 
-    
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <div class="container" id="product-list">
+        <!-- Aquí se agregará la lista de productos -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.get("http://localhost:8080/api/cat/catalogue", function(data) {
+                var productList = "";
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data)
+                    productList += '<div class="card">';
+                    productList += '<div class="card-body">';
+                    productList += '<h5 class="card-title">' + data[i].titulo + '</h5>';
+                    productList += '<p class="card-text">' + data[i].descripcion + '</p>';
+                    productList += '<p class="card-text">Codigo: ' + data[i].codigo + '</p>';
+                    productList += '<p class="card-text">Precio: ' + data[i].precio + '</p>';
+                    productList += '<p class="card-text">Stock: ' + data[i].stock + '</p>';
+                    productList += '<p class="card-text">Estado: ' + data[i].estado + '</p>';
+                    productList += '<p class="card-text">Categoria: ' + data[i].categoria + '</p>';
+                    if (data[i].estado === 'Activo') {
+                        productList += '<button class="btn btn-primary" onclick="addToCart(\'' + data[i].titulo + '\', \'' + data[i].descripcion + '\', \'' + data[i].codigo + '\', ' + data[i].precio + ')">Agregar al carrito</button>';
+                    } else {
+                        productList += '<button class="btn btn-primary disabled">Agregar al carrito</button>';
+                    }
+                    productList += '</div>';
+                    productList += '</div>';
+                }
+
+                $("#product-list").html(productList);
+            });
+        });
+
+        function addToCart(titulo, descripcion, codigo, precio) {
+            $.post("http://localhost:8080/api/productsmanager/cat/cart", {titulo: titulo, descripcion: descripcion, codigo: codigo, precio: precio}, function() {
+                alert("Producto agregado al carrito");
+            });
+        }
+    </script>
+    
 </body>
 </html>

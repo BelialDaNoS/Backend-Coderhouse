@@ -1,5 +1,6 @@
 import express from 'express';
-import productsRouter from '../routes/products.routers.js';
+import productsRouter from '../routes/productmanager.js';
+import products from '../routes/products.js'
 import path from 'path';
 
 // import __dirname from '../utils.js';
@@ -11,11 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
+app.use('/api/cat', products)
 app.use('/api/productsmanager', productsRouter);
 
 const server = app.listen(8080, () => console.log('Listening on 8080'));
 
 
-// import productsCatalogue from './routes/catalogue'
-// app.use('/api/', productsCatalogue)

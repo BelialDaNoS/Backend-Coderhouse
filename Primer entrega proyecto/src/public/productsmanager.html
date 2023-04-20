@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="http://localhost:8080/api/">Tienda Virtual</a>
+            <a class="navbar-brand" href="http://localhost:8080/api/cat/">Tienda Virtual</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost:8080/api/productsmanager">Product Manager</a>
@@ -65,9 +65,9 @@
                         <label for="categoria">Categoría:</label>
                         <select class="form-control" id="categoria" name="categoria" required>
                             <option value="">Seleccionar Categoría</option>
-                            <option value="placas de Video">Placas de video</option>
-                            <option value="procesadores">Procesadores</option>
-                            <option value="preifericos">Periféricos</option>
+                            <option value="Placas de Video">Placas de video</option>
+                            <option value="Procesadores">Procesadores</option>
+                            <option value="Perifericos">Periféricos</option>
                         </select>
                     </div>
                     <!-- <div class="form-group">
@@ -75,6 +75,8 @@
                         <input type="file" class="form-control-file" id="image" name="image[]" >
                     </div> -->
                     <button type="submit" id="agregar-producto" class="btn btn-primary btn-block mt-4">Agregar producto</button>
+                    <button type="submit" id="actualizar-producto" class="btn btn-success btn-block mt-4">Actualizar producto</button>
+
                 </form>
             </div>
             <div class="col-md-6 bg-light">
@@ -95,33 +97,66 @@
 
     <script>
         $(document).ready(function() {
-        $('#formulario-producto').submit(function(event) {
-            event.preventDefault();
-            $.post('http://localhost:8080/api/productsmanager', $('#formulario-producto').serialize(), function(data) {
-            console.log(data);
+
+            $('#formulario-producto').submit(function(event) {
+            event.preventDefault(); // Evita que la página se recargue
+            $.ajax({
+                url: 'http://localhost:8080/api/productsmanager',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    console.log(response)
+                    alert(`Producto ${response.product.titulo} cargado exitosamente con el ID: ${response.product.id}`);
+                },
+                error: function(xhr, status, error) {
+                    // Si la respuesta indica que el código de producto ya existe, muestra un mensaje emergente de error
+                    if (xhr.status == 400) {
+                        alert("Error: El código de producto ya existe. Por favor, ingrese otro código.");
+                    }
+                }
             });
-        });
+            }); 
+      
+          $('#btn-eliminar-producto').click(function() {
+            var codigoProducto = $('#codigo-producto').val();
+            $.ajax({
+              url: 'http://localhost:8080/api/productsmanager/' + codigoProducto,
+              type: 'DELETE',
+              success: function(result) {
+                alert(`producto con ID: ${result.product.id}, "${result.product.titulo}" borrado exitosamente`)
+              },
+              error: function(xhr, status, error){
+                if(xhr.status == 404){
+                    alert("Error, ID no encontrado");
+                }
+            }
+          }); 
         });
 
-        
-        $(document).ready(function() {
-      $('#btn-eliminar-producto').click(function() {
-        var codigoProducto = $('#codigo-producto').val();
-        $.ajax({
-          url: 'http://localhost:8080/api/productsmanager/' + codigoProducto,
-          type: 'DELETE',
-          success: function(result) {
-            console.log(result)
-          },
-          error: function(xhr, status, error){
-            if(xhr.status == 404){
-                alert("Error, ID no encontrado");
-            }
-          }
+
+        $("#actualizar-producto").click(function(event){
+            event.preventDefault();
+
+            var idProducto = $("#codigo").val();
+
+            $.ajax({
+                url: "http://localhost:8080/api/productsmanager/" + idProducto,
+                type: "PUT",
+                data: $("#formulario-producto").serialize(),
+                success: function(response){
+                    alert("El producto ha sido actualizado correctamente");
+                    window.location.reload();
+                },
+                error: function(){
+                    alert("Ha ocurrido un error al actualizar el producto");
+                }
+            });
         });
-      });
-    });
-    </script>
+
+          
+
+        });
+      </script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
