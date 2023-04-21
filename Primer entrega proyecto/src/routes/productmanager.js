@@ -78,54 +78,47 @@ router.delete('/:id', (req, res) => {
   res.status(200).send({ success: true, product: deletedProduct });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:codigo', (req, res) => {
   const productsPath = path.join(__dirname, '.', 'products.json');
   let products = [];
-  
+
   if (fs.existsSync(productsPath)) {
-  products = JSON.parse(fs.readFileSync(productsPath));
+    products = JSON.parse(fs.readFileSync(productsPath));
   } else {
-  fs.writeFileSync(productsPath, JSON.stringify([]));
+    fs.writeFileSync(productsPath, JSON.stringify([]));
   }
-  
-  const productId = Number(req.params.id);
-  const index = products.findIndex((product) => product.id === productId);
-  
-  if (index === -1) {
-  res.status(404).send({ error: 'Producto no encontrado.' });
-  return;
-  }
-  
+
   const { titulo, descripcion, codigo, precio, stock, activo } = req.body;
-  
-  if (!titulo || !descripcion || !codigo || !precio || !stock) {
-  res.status(400).send({ error: 'Faltan propiedades del producto.' });
-  return;
+
+  if (!codigo) {
+    res.status(400).send({ error: 'Falta la propiedad "codigo" del producto.' });
+    return;
   }
-  
+
   const estado = activo === undefined ? 'inactivo' : 'activo';
-  
-  const productExists = products.find((product) => product.codigo === codigo && product.id !== productId);
-  
-  if (productExists) {
-  res.status(400).send({ error: 'Ya existe un producto con el mismo código.' });
-  return;
+
+  const existingProductIndex = products.findIndex((product) => product.codigo === codigo);
+  if (existingProductIndex === -1) {
+    res.status(400).send({ error: 'No existe un producto con el código especificado.' });
+    return;
   }
-  
-  products[index] = {
-  ...products[index],
-  titulo,
-  descripcion,
-  codigo,
-  precio,
-  stock,
-  estado,
+
+  const existingProduct = products[existingProductIndex];
+  const updatedProduct = {
+    ...existingProduct,
+    titulo,
+    descripcion,
+    codigo,
+    precio,
+    stock,
+    estado,
   };
-  
+  products[existingProductIndex] = updatedProduct;
   fs.writeFileSync(productsPath, JSON.stringify(products));
-  
-  res.status(200).send({ success: true, product: products[index] });
-  });
+
+  res.status(200).send({ success: true, product: updatedProduct });
+});
+
 
 
 export default router;
