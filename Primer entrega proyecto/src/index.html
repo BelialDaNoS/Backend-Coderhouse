@@ -50,7 +50,7 @@
             $.get("http://localhost:8080/api/catalogue/cat", function(data) {
                 var productList = "";
                 for (var i = 0; i < data.length; i++) {
-                    console.log(data)
+                    
                     productList += '<div class="card">';
                     productList += '<div class="card-body">';
                     productList += '<h5 class="card-title">' + data[i].titulo + '</h5>';
@@ -61,7 +61,7 @@
                     productList += '<p class="card-text">Estado: ' + data[i].estado + '</p>';
                     productList += '<p class="card-text">Categoria: ' + data[i].categoria + '</p>';
                     if (data[i].estado === 'activo') {
-                        productList += '<button class="btn btn-primary" onclick="addToCart(\'' + data[i].titulo + '\', \'' + data[i].descripcion + '\', \'' + data[i].codigo + '\', ' + data[i].precio + ')">Agregar al carrito</button>';
+                        productList += '<button class="btn btn-primary" onclick="addToCart(\'' + data[i].titulo + '\', \'' + data[i].descripcion + '\', \'' + data[i].codigo + '\', ' + data[i].precio + ', ' + data[i].id.toString() + ')">Agregar al carrito</button>';
                     } else {
                         productList += '<button class="btn btn-primary disabled">Agregar al carrito</button>';
                     }
@@ -73,8 +73,8 @@
             });
         });
 
-        function addToCart(titulo, descripcion, codigo, precio) {
-            $.post("http://localhost:8080/api/cart", {titulo: titulo, descripcion: descripcion, codigo: codigo, precio: precio}, function() {
+        function addToCart(titulo, descripcion, codigo, precio, id) {
+            $.post("http://localhost:8080/api/cart", {titulo: titulo, descripcion: descripcion, codigo: codigo, precio: precio, Quantity: 1, id:id}, function() {
                 alert("Producto agregado al carrito");
             });
         }
