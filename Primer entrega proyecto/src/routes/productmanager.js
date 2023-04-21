@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const productsPath = path.join(__dirname, '..', 'products.json');
+  const productsPath = path.join(__dirname, '.', 'products.json');
   let products = [];
 
   if (fs.existsSync(productsPath)) {
@@ -55,7 +55,7 @@ router.post('/', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const productsPath = path.join(__dirname, '..', 'products.json');
+  const productsPath = path.join(__dirname, '.', 'products.json');
   let products = [];
 
   if (fs.existsSync(productsPath)) {
@@ -79,7 +79,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  const productsPath = path.join(__dirname, '..', 'products.json');
+  const productsPath = path.join(__dirname, '.', 'products.json');
   let products = [];
   
   if (fs.existsSync(productsPath)) {

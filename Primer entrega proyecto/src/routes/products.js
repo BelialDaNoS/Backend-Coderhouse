@@ -6,13 +6,19 @@ import fs from 'fs';
 const router = express.Router();
 
 router.get('/', (req, res) => {
+
+  const productfile = path.join(__dirname, './products.json');
+
+if (!fs.existsSync(productfile)) {
+  fs.writeFileSync(productfile, '[]');
+}
   const filePath = path.join(__dirname, './index.html');
   res.sendFile(filePath);
 });
 
 
-router.get('/catalogue', (req, res) => {
-    const filePath = path.join(__dirname, '../products.json');
+router.get('/cat', (req, res) => {
+    const filePath = path.join(__dirname, './products.json');
     fs.readFile(filePath, 'utf-8', (err, data) => {
       if (err) {
         console.error(err);
@@ -25,7 +31,7 @@ router.get('/catalogue', (req, res) => {
 });
 
 
-router.get('/catalogue/:id', (req, res) => {
+router.get('/cat/:id', (req, res) => {
     const filePath = path.join(__dirname, '../products.json');
     fs.readFile(filePath, 'utf-8', (err, data) => {
       if (err) {

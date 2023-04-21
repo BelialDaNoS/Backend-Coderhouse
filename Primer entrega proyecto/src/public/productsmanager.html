@@ -5,15 +5,17 @@
     <title>Tienda Virtual</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./product.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="http://localhost:8080/api/cat/">Tienda Virtual</a>
+            <a class="navbar-brand" href="http://localhost:8080/api/catalogue/">Tienda Virtual</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost:8080/api/productsmanager">Product Manager</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/api/cart">Carrito</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -99,7 +101,7 @@
         $(document).ready(function() {
 
             $('#formulario-producto').submit(function(event) {
-            event.preventDefault(); // Evita que la página se recargue
+            event.preventDefault();
             $.ajax({
                 url: 'http://localhost:8080/api/productsmanager',
                 type: 'POST',
@@ -109,7 +111,6 @@
                     alert(`Producto ${response.product.titulo} cargado exitosamente con el ID: ${response.product.id}`);
                 },
                 error: function(xhr, status, error) {
-                    // Si la respuesta indica que el código de producto ya existe, muestra un mensaje emergente de error
                     if (xhr.status == 400) {
                         alert("Error: El código de producto ya existe. Por favor, ingrese otro código.");
                     }
