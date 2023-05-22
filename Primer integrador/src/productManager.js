@@ -4,12 +4,8 @@ const Product = require("./dao/models/Product");
 class ProductManager {
   async addProd(prod) {
     try {
-      // 2. Crea una instancia del modelo de producto de Mongoose con los datos recibidos
       const newProduct = new Product(prod);
-
-      // 3. Guarda el nuevo producto en la base de datos
       const savedProduct = await newProduct.save();
-
       console.log(`Producto ${savedProduct.title} agregado de manera exitosa`);
       return savedProduct;
     } catch (error) {
@@ -26,7 +22,6 @@ class ProductManager {
   }
   async getProdById(id) {
     try {
-      // 5. Obtén un producto por su ID desde la base de datos
       const producto = await Product.findById(id);
       if (!producto) {
         console.log("No existe tal producto");
